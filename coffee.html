@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brewed Elegance | Premium Coffee Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6F4E37;
+            --secondary: #E6E2D3;
+            --accent: #C4A484;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f9f7f2;
+            color: #333;
+        }
+        
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .coffee-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(50px);
+            opacity: 0;
+        }
+        
+        .coffee-card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .coffee-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .steam {
+            position: absolute;
+            height: 80px;
+            width: 80px;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+        }
+        
+        .steam-one {
+            animation: steam1 4s ease-out infinite;
+        }
+        
+        .steam-two {
+            animation: steam2 4s ease-out 0.5s infinite;
+        }
+        
+        @keyframes steam1 {
+            0% {
+                transform: translateY(0) translateX(-50%) scale(0.25);
+                opacity: 0;
+            }
+            25% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-80px) translateX(-50%) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes steam2 {
+            0% {
+                transform: translateY(0) translateX(-50%) scale(0.5);
+                opacity: 0;
+            }
+            25% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-80px) translateX(-50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        
+        .mobile-menu.open {
+            max-height: 500px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #5a3d2b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            border: 2px solid white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            bottom: -8px;
+            left: 20%;
+            background-color: var(--primary);
+        }
+        
+        .coffee-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover .coffee-icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+        }
+        
+        @media (max-width: 768px) {
+            .parallax {
+                background-attachment: scroll;
+            }
+            
+            .hero {
+                background-attachment: scroll;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md fixed w-full z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-mug-hot text-[var(--primary)] text-2xl mr-2"></i>
+                    <span class="title-font text-2xl font-bold text-[var(--primary)]">Brewed Elegance</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-gray-800 hover:text-[var(--primary)] font-medium">Home</a>
+                    <a href="#coffees" class="nav-link text-gray-800 hover:text-[var(--primary)] font-medium">Our Coffees</a>
+                    <a href="#about" class="nav-link text-gray-800 hover:text-[var(--primary)] font-medium">About</a>
+                    <a href="#contact" class="nav-link text-gray-800 hover:text-[var(--primary)] font-medium">Contact</a>
+                </div>
+                
+                <button id="menuToggle" class="md:hidden focus:outline-none">
+                    <i class="fas fa-bars text-[var(--primary)] text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="mobile-menu md:hidden mt-2">
+                <div class="flex flex-col space-y-3 py-4">
+                    <a href="#home" class="nav-link text-gray-800 hover:text-[var(--primary)] font-medium">Home</a>
+                    <a href="#coffees" class="nav-link text-gray-800 hover:text-[var(--primary)] font-medium">Our Coffees</a>
+                    <a href="#about" class="nav-link text-gray-800 hover:text-[var(--primary)] font-medium">About</a>
+                    <a href="#contact" class="nav-link text-gray-800 hover:text-[var(--primary)] font-medium">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero min-h-screen flex items-center justify-center text-center text-white pt-20">
+        <div class="container mx-auto px-6">
+            <h1 class="title-font text-4xl md:text-6xl lg:text-7xl font-bold mb-6 fade-in">Crafted <span class="text-[var(--accent)]">Perfection</span> in Every Cup</h1>
+            <p class="text-lg md:text-xl lg:text-2xl mb-10 max-w-2xl mx-auto fade-in">Experience the art of coffee with our premium selection of handcrafted brews from around the world.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 fade-in">
+                <button class="btn-primary text-white font-bold py-3 px-8 rounded-full">
+                    Explore Menu
+                </button>
+                <button class="btn-outline text-white font-bold py-3 px-8 rounded-full">
+                    Book a Tasting
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="section-title title-font text-3xl md:text-4xl font-bold text-[var(--primary)]">Why Choose Us</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-8">We're dedicated to bringing you the finest coffee experience with attention to every detail.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="feature-card bg-[var(--secondary)] p-8 rounded-lg text-center hover:shadow-lg transition-all duration-300">
+                    <div class="w-20 h-20 bg-[var(--primary)] rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-globe-americas text-white text-2xl coffee-icon"></i>
+                    </div>
+                    <h3 class="title-font text-xl font-bold text-[var(--primary)] mb-3">Global Sourcing</h3>
+                    <p class="text-gray-600">Direct partnerships with sustainable farms across 12 countries for the finest beans.</p>
+                </div>
+                
+                <div class="feature-card bg-[var(--secondary)] p-8 rounded-lg text-center hover:shadow-lg transition-all duration-300">
+                    <div class="w-20 h-20 bg-[var(--primary)] rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-fire text-white text-2xl coffee-icon"></i>
+                    </div>
+                    <h3 class="title-font text-xl font-bold text-[var(--primary)] mb-3">Artisan Roasting</h3>
+                    <p class="text-gray-600">Small-batch roasted to perfection by our master roasters with 15+ years experience.</p>
+                </div>
+                
+                <div class="feature-card bg-[var(--secondary)] p-8 rounded-lg text-center hover:shadow-lg transition-all duration-300">
+                    <div class="w-20 h-20 bg-[var(--primary)] rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-award text-white text-2xl coffee-icon"></i>
+                    </div>
+                    <h3 class="title-font text-xl font-bold text-[var(--primary)] mb-3">Award Winning</h3>
+                    <p class="text-gray-600">Recognized by the Specialty Coffee Association for excellence in quality and taste.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coffee Selection -->
+    <section id="coffees" class="py-20 bg-[#f9f7f2]">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="section-title title-font text-3xl md:text-4xl font-bold text-[var(--primary)]">Our Signature Brews</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-8">Discover our carefully crafted selection of coffee experiences.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Espresso -->
+                <div class="coffee-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1517705008128-361805f42e86?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Espresso" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <div class="absolute top-0 left-0 w-full h-full bg-black/20"></div>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                            <span class="text-white text-3xl font-bold">$3.50</span>
+                        </div>
+                        
+                        <!-- Steam animation -->
+                        <div class="steam steam-one">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150">
+                                <path fill="#FFFFFF" d="M72.929,5.5c-18.9,4.1-33.5,20.8-33.5,41c0,5.7,1,11.1,2.9,16.1c-7.1-3.3-15.1-5.1-23.6-5.1
+                                    c-16.2,0-30.8,7.4-40.4,19.1C-9.571,97.8,2.529,117.7,21.729,124.5c3.8,1.4,7.8,2.1,12,2.1c16.2,0,30.8-7.4,40.4-19.1
+                                    c9.6,11.7,24.1,19.1,40.4,19.1c4.2,0,8.2-0.7,12-2.1c19.2-6.8,31.3-26.7,24.5-45.9c-9.6-11.7-24.1-19.1-40.4-19.1
+                                    c-8.5,0-16.5,1.8-23.6,5.1c1.8-5,2.9-10.4,2.9-16.1C106.429,30.1,89.629,10.9,72.929,5.5z"/>
+                            </svg>
+                        </div>
+                        <div class="steam steam-two">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150">
+                                <path fill="#FFFFFF" d="M72.929,5.5c-18.9,4.1-33.5,20.8-33.5,41c0,5.7,1,11.1,2.9,16.1c-7.1-3.3-15.1-5.1-23.6-5.1
+                                    c-16.2,0-30.8,7.4-40.4,19.1C-9.571,97.8,2.529,117.7,21.729,124.5c3.8,1.4,7.8,2.1,12,2.1c16.2,0,30.8-7.4,40.4-19.1
+                                    c9.6,11.7,24.1,19.1,40.4,19.1c4.2,0,8.2-0.7,12-2.1c19.2-6.8,31.3-26.7,24.5-45.9c-9.6-11.7-24.1-19.1-40.4-19.1
+                                    c-8.5,0-16.5,1.8-23.6,5.1c1.8-5,2.9-10.4,2.9-16.1C106.429,30.1,89.629,10.9,72.929,5.5z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="title-font text-2xl font-bold text-[var(--primary)] mb-2">Classic Espresso</h3>
+                        <p class="text-gray-600 mb-4">Our signature single-origin espresso with rich crema and notes of dark chocolate and caramel.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--primary)] font-medium">1 oz</span>
+                            <button class="bg-[var(--primary)] hover:bg-[#5a3d2b] text-white px-4 py-2 rounded-full text-sm transition duration-300">
+                                Add to Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Latte -->
+                <div class="coffee-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Latte" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <div class="absolute top-0 left-0 w-full h-full bg-black/20"></div>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                            <span class="text-white text-3xl font-bold">$4.75</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="title-font text-2xl font-bold text-[var(--primary)] mb-2">Velvet Latte</h3>
+                        <p class="text-gray-600 mb-4">Silky smooth latte with house-made vanilla syrup and perfectly steamed organic milk.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--primary)] font-medium">12 oz</span>
+                            <button class="bg-[var(--primary)] hover:bg-[#5a3d2b] text-white px-4 py-2 rounded-full text-sm transition duration-300">
+                                Add to Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cappuccino -->
+                <div class="coffee-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1568649929103-28ffbefaca1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Cappuccino" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                        <div class="absolute top-0 left-0 w-full h-full bg-black/20"></div>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                            <span class="text-white text-3xl font-bold">$4.25</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="title-font text-2xl font-bold text-[var(--primary)] mb-2">Cloud Cappuccino</h3>
+                        <p class="text-gray-600 mb-4">Perfectly balanced with a thick layer of microfoam and our signature espresso blend.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[var(--primary)] font-medium">8 oz</span>
+                            <button class="bg-[var(--primary)] hover:bg-[#5a3d2b] text-white px-4 py-2 rounded-full text-sm transition duration-300">
+                                Add to Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="bg-[var(--primary)] hover:bg-[#5a3d2b] text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                    View Full Menu
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12 relative">
+                    <div class="relative rounded-xl overflow-hidden shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Coffee Roasting" class="w-full h-auto">
+                        <div class="absolute -bottom-6 -right-6 bg-[var(--secondary)] p-6 rounded-lg shadow-lg hidden md:block">
+                            <div class="text-center">
+                                <span class="title-font text-4xl font-bold text-[var(--primary)] block">12+</span>
+                                <span class="text-[var(--primary)]">Years of Experience</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <h2 class="title-font text-3xl md:text-4xl font-bold text-[var(--primary)] mb-6">Our Story</h2>
+                    <p class="text-gray-600 mb-6">Founded in 2011, Brewed Elegance began as a small roastery with a passion for exceptional coffee. What started as a humble operation in a garage has grown into a celebrated coffee destination, recognized for our commitment to quality and sustainability.</p>
+                    <p class="text-gray-600 mb-8">We travel directly to coffee farms, build relationships with growers, and meticulously oversee every step from bean to cup. Our master roasters have perfected their craft over decades, bringing out the unique character of each origin.</p>
+                    
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-[var(--primary)] text-xl mr-3"></i>
+                            <span class="text-gray-700">Direct Trade Beans</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-[var(--primary)] text-xl mr-3"></i>
+                            <span class="text-gray-700">Organic Certification</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-[var(--primary)] text-xl mr-3"></i>
+                            <span class="text-gray-700">Carbon Neutral</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-[var(--primary)] text-xl mr-3"></i>
+                            <span class="text-gray-700">Community Focused</span>
+                        </div>
+                    </div>
+                    
+                    <button class="bg-[var(--primary)] hover:bg-[#5a3d2b] text-white font-bold py-3 px-8 rounded-full transition duration-300">
+                        Learn More About Us
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 bg-[var(--secondary)] parallax" style="background-image: linear-gradient(rgba(111, 78, 55, 0.8), rgba(111, 78, 55, 0.8)), url('https://images.unsplash.com/photo-1517701550927-30cf4ba1d8a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center;">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="section-title title-font text-3xl md:text-4xl font-bold text-white">What Our Customers Say</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-8 rounded-lg shadow-sm transform transition duration-500 hover:scale-105">
+                    <div class="flex items-center mb-4">
+                        <div class="text-amber-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"The best latte I've ever had! The balance of espresso to milk is perfect, and their house-made syrups are incredible."</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sarah J." class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-[var(--primary)]">Sarah J.</h4>
+                            <p class="text-gray-500 text-sm">Regular Customer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-8 rounded-lg shadow-sm transform transition duration-500 hover:scale-105">
+                    <div class="flex items-center mb-4">
+                        <div class="text-amber-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"As a coffee professional, I'm impressed by their attention to detail in brewing and their exceptional bean quality."</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael T." class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-[var(--primary)]">Michael T.</h4>
+                            <p class="text-gray-500 text-sm">Coffee Roaster</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-8 rounded-lg shadow-sm transform transition duration-500 hover:scale-105">
+                    <div class="flex items-center mb-4">
+                        <div class="text-amber-500 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-6">"The atmosphere is so welcoming, and the staff remembers my usual order. It's become my daily ritual!"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Jessica L." class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-[var(--primary)]">Jessica L.</h4>
+                            <p class="text-gray-500 text-sm">Local Artist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12">
+                    <h2 class="title-font text-3xl md:text-4xl font-bold text-[var(--primary)] mb-6">Visit Us</h2>
+                    <p class="text-gray-600 mb-8">We'd love to brew you the perfect cup. Come visit our flagship location or get in touch.</p>
+                    
+                    <div class="mb-8">
+                        <h3 class="title-font text-xl font-bold text-[var(--primary)] mb-4">Brewed Elegance Café</h3>
+                        <div class="flex items-start mb-4">
+                            <i class="fas fa-map-marker-alt text-[var(--primary)] mt-1 mr-4"></i>
+                            <p class="text-gray-600">123 Coffee Lane<br>Portland, OR 97201</p>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-phone-alt text-[var(--primary)] mr-4"></i>
+                            <p class="text-gray-600">(503) 555-0199</p>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-[var(--primary)] mr-4"></i>
+                            <p class="text-gray-600">Mon-Fri: 6am-8pm<br>Sat-Sun: 7am-9pm</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-[var(--secondary)] rounded-full flex items-center justify-center text-[var(--primary)] hover:bg-[var(--accent)] transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-[var(--secondary)] rounded-full flex items-center justify-center text-[var(--primary)] hover:bg-[var(--accent)] transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-[var(--secondary)] rounded-full flex items-center justify-center text-[var(--primary)] hover:bg-[var(--accent)] transition duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-[var(--secondary)] p-8 rounded-lg shadow-sm">
+                        <h3 class="title-font text-2xl font-bold text-[var(--primary)] mb-6">Send Us a Message</h3>
+                        <form>
+                            <div class="mb-6">
+                                <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]">
+                            </div>
+                            <div class="mb-6">
+                                <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]">
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                                <textarea id="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-[var(--primary)] hover:bg-[#5a3d2b] text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-[var(--primary)] text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="title-font text-3xl font-bold mb-6">Join Our Coffee Club</h2>
+            <p class="max-w-2xl mx-auto text-[var(--secondary)] mb-8">Sign up for our newsletter to receive exclusive offers, brewing tips, and updates on new arrivals.</p>
+            <div class="max-w-md mx-auto flex">
+                <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-l-lg focus:outline-none text-gray-900">
+                <button class="bg-[var(--accent)] hover:bg-[#b38e6c] px-6 py-3 rounded-r-lg font-medium transition duration-300">
+                    Subscribe
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[var(--primary)] text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-8 md:mb-0">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-mug-hot text-[var(--accent)] text-2xl mr-2"></i>
+                        <span class="title-font text-2xl font-bold text-[var(--accent)]">Brewed Elegance</span>
+                    </div>
+                    <p class="text-[var(--secondary)] max-w-xs">Crafting exceptional coffee experiences since 2011.</p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div>
+                        <h4 class="title-font text-lg font-bold text-[var(--accent)] mb-4">Explore</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Menu</a></li>
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Our Story</a></li>
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Locations</a></li>
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Events</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="title-font text-lg font-bold text-[var(--accent)] mb-4">Support</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Contact Us</a></li>
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">FAQs</a></li>
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Shipping</a></li>
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Returns</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="title-font text-lg font-bold text-[var(--accent)] mb-4">Legal</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Privacy Policy</a></li>
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Terms of Service</a></li>
+                            <li><a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-[var(--accent)] mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-[var(--secondary)] mb-4 md:mb-0">© 2023 Brewed Elegance. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-[var(--secondary)] hover:text-white transition duration-300">
+                        <i class="fab fa-pinterest"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-6 right-6 w-12 h-12 bg-[var(--primary)] hover:bg-[#5a3d2b] rounded-full shadow-lg flex items-center justify-center text-white text-xl transition duration-300 opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+            });
+        });
+        
+        // Back to Top Button
+        const backToTopButton = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Intersection Observer for animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const coffeeCards = document.querySelectorAll('.coffee-card');
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 200); // Staggered delay
+                }
+            });
+        }, observerOptions);
+        
+        fadeElements.forEach(el => fadeObserver.observe(el));
+        coffeeCards.forEach(el => cardObserver.observe(el));
+        
+        // Add steam animation to coffee cards on hover
+        const espressoCard = document.querySelector('.coffee-card:first-child');
+        
+        espressoCard.addEventListener('mouseenter', () => {
+            const steamElements = espressoCard.querySelectorAll('.steam');
+            steamElements.forEach(el => el.style.opacity = '1');
+        });
+        
+        espressoCard.addEventListener('mouseleave', () => {
+            const steamElements = espressoCard.querySelectorAll('.steam');
+            steamElements.forEach(el => el.style.opacity = '0');
+        });
+    </script>
+</body>
+</html>
